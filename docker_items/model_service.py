@@ -7,7 +7,7 @@ import io
 import torchvision.transforms as transforms
 import torch.nn.functional as F
 
-
+# establish the model class - the same as in the model training notebook
 class MNISTClassifier(nn.Module):
     def __init__(self):
         super(MNISTClassifier, self).__init__()
@@ -39,7 +39,7 @@ model.eval()
 # Set up the Flask app
 app = Flask(__name__)
 
-# Define the transformation
+# Define the transformation that will be applied to input images
 transform = transforms.Compose([
     transforms.Resize((28, 28)),
     transforms.Grayscale(num_output_channels=1),
@@ -47,7 +47,7 @@ transform = transforms.Compose([
     transforms.Normalize((0.5,), (0.5,))
 ])
 
-# Define a route for prediction
+# Define a route for prediction - this is called by the app when a drawing is submitted
 @app.route('/predict', methods=['POST'])
 def predict():
     image_file = request.files['image'].read()
@@ -56,7 +56,7 @@ def predict():
 
     with torch.no_grad():
         output = model(image)
-        prob = F.softmax(output, dim=1)  # Apply softmax to get probabilities
+        prob = F.softmax(output, dim=1)  # Apply softmax to get confidence value
         confidence, predicted = torch.max(prob, 1)
 
     return jsonify({'prediction': predicted.item(),

@@ -12,13 +12,13 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL)
 cursor = conn.cursor()
 
-# Define API endpoint for the model container
-MODEL_API_URL = "http://model-container:5000/predict"  # Update with actual container URL
+# API endpoint for the model container
+MODEL_API_URL = "http://model-container:5000/predict" 
 
 st.title("Handwritten Digit Recognition")
 
 # Create two columns: one for the canvas and one for the outputs
-col1, col2 = st.columns([1, 1])  # Adjust the ratio to control the space allocation
+col1, col2 = st.columns([1, 1])  # equal space for canvas and outputs
 
 # Column 1: Drawing canvas
 with col1:
@@ -63,7 +63,7 @@ with col2:
             st.write(f"#### True Label: {true_label}")
 
             try:
-                # Insert the data
+                # Insert the data to the db
                 cursor.execute(
                     """
                     INSERT INTO submissions (true_label, prediction, confidence)

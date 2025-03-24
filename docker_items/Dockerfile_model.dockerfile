@@ -9,8 +9,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Python model service script and the model file into the container
-COPY model_service.py /app/
-COPY model.pth /app/
+COPY model_service.py model.pth ./
 
 # Expose the port the app runs on
 EXPOSE 5000

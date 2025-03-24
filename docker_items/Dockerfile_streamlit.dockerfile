@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install psycopg2-binary
 
 # Copy your Streamlit app script
-COPY app.py /app/app.py
+COPY app.py .
 
 # Expose the port the app runs on
 EXPOSE 8501
