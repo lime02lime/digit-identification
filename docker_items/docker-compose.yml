@@ -1,0 +1,28 @@
+services:
+  model-service:
+    build:
+      context: .
+      dockerfile: dockerfile_model.dockerfile
+    container_name: model-container
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./model.pth:/app/model.pth  # Make sure the model is available
+    networks:
+      - app-network
+
+  streamlit-app:
+    build:
+      context: .
+      dockerfile: dockerfile_streamlit.dockerfile
+    container_name: streamlit-app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - model-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -26,7 +26,7 @@ class MNISTClassifier(nn.Module):
 model = MNISTClassifier()
 
 # Load the trained weights (state_dict)
-model.load_state_dict(torch.load('docker_items/model.pth'))
+model.load_state_dict(torch.load('/app/model.pth'))
 
 model.eval()
 
