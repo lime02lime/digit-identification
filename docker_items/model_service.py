@@ -11,15 +11,21 @@ import torch.nn.functional as F
 class MNISTClassifier(nn.Module):
     def __init__(self):
         super(MNISTClassifier, self).__init__()
-        self.fc1 = nn.Linear(28*28, 128)  # Input layer (784 -> 128)
-        self.fc2 = nn.Linear(128, 64)     # Hidden layer (128 -> 64)
-        self.fc3 = nn.Linear(64, 10)      # Output layer (64 -> 10)
-
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)  # 28x28x1 -> 28x28x32
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1) # 28x28x32 -> 28x28x64
+        self.fc1 = nn.Linear(64*7*7, 128)  # Flattened image from 28x28 to 7x7 after pooling
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 10)
+        
     def forward(self, x):
-        x = x.view(-1, 28*28)  # Flatten images
-        x = torch.relu(self.fc1(x))  
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)  # No activation (logits)
+        x = F.relu(self.conv1(x))  # Apply first convolution
+        x = F.max_pool2d(x, 2)     # Max pooling (2x2)
+        x = F.relu(self.conv2(x))  # Apply second convolution
+        x = F.max_pool2d(x, 2)     # Max pooling (2x2)
+        x = x.view(-1, 64*7*7)     # Flatten the image to a 1D tensor
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)  # Output layer with no activation
         return x
 
 # Initialize the model
@@ -54,7 +60,7 @@ def predict():
         confidence, predicted = torch.max(prob, 1)
 
     return jsonify({'prediction': predicted.item(),
-                    'probability': confidence.item()
+                    'confidence': confidence.item()
                     })
 
 if __name__ == '__main__':
