@@ -21,8 +21,8 @@ This is a hobby project to improve on my skills using a combination of ML techni
 ## Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/digit-identification.git
-    cd digit-identification
+    git clone https://github.com/lime02lime/digit-identification
+    cd digit-identification/docker_items
     ```
 
 2. Build and run the Docker containers:
