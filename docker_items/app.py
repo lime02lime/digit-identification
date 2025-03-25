@@ -1,21 +1,30 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import requests
 import cv2
 import psycopg2
 from streamlit_drawable_canvas import st_canvas
 import os
 
-
-# database configuration
+# Database configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL)
 cursor = conn.cursor()
 
 # API endpoint for the model container
-MODEL_API_URL = "http://model-container:5000/predict" 
+MODEL_API_URL = "http://model-container:5000/predict"
 
 st.title("Handwritten Digit Recognition")
+
+def load_submission_history():
+    cursor.execute(
+        """
+        SELECT timestamp, prediction, true_label FROM submissions ORDER BY timestamp DESC
+        """
+    )
+    rows = cursor.fetchall()
+    return pd.DataFrame(rows, columns=["Timestamp", "Prediction", "True Label"])
 
 # Create two columns: one for the canvas and one for the outputs
 col1, col2 = st.columns([1, 1])  # equal space for canvas and outputs
@@ -88,6 +97,16 @@ with col2:
             except psycopg2.Error as e:
                 st.write(f"Error saving to db: {e}")
                 conn.rollback()  # Rollback in case of an error
+            
+            # Reload and display submission history after submission
+            submission_history = load_submission_history()
 
         else:
             st.error("Please draw a number AND enter the actual number before submitting!")
+
+# Load and display submission history
+st.write("## Submission History")
+submission_history = load_submission_history()
+st.dataframe(submission_history)
+
+
