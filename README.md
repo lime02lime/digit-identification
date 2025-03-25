@@ -1,5 +1,7 @@
 # Digit Identification
 
+Demo version available on [here](http://13.40.6.33:8501/).
+
 ## Overview
 
 This is a hobby project to improve on my skills using a combination of ML techniques and application deployment. While the ML aspects of this problem are fairly simple, it is good practice with training and deploying ML models for applications in a containerized environment.
