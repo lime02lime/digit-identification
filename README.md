@@ -1,6 +1,6 @@
 # Digit Identification
 
-Demo version available [here](http://13.40.6.33:8501/).
+Demo version available [here](http://13.40.6.33:8501/), deployed on AWS Lightsail.
 
 ## Overview
 
@@ -13,8 +13,10 @@ This is a hobby project to improve on my skills using a combination of ML techni
 - 10,000 images are in the training set.
 
 ## Application
-- The application is deployed as a composition of these 3 Docker containers: app, model-service, and PostgreSQL DB.
-- The main app is built using Streamlit and exposed through port 8501, with access to the other two containers.
+- The application is deployed as a composition of three Docker containers: Streamlit app, model-service, and PostgreSQL database.
+- The main app is built using Streamlit and exposed through port 8501, hosted on an AWS Lightsail instance.
+- The model-service is responsible for making predictions and is containerized separately.
+- A PostgreSQL database is used to log interactions.
 
 ## Prerequisites
 - Docker
@@ -33,7 +35,7 @@ This is a hobby project to improve on my skills using a combination of ML techni
     ```
 
 ## Usage
-- Access the Streamlit app at `http://localhost:8501`.
+- Access the Streamlit app at `http://<your-lightsail-public-ip>:8501`.
 - Draw a digit on the canvas and enter the actual number in the input field.
 - Click "Submit" to get the model's prediction and confidence score.
 
@@ -44,3 +46,13 @@ This is a hobby project to improve on my skills using a combination of ML techni
 - `docker_items/Dockerfile_model.dockerfile`: Dockerfile for the model service.
 - `docker_items/Dockerfile_streamlit.dockerfile`: Dockerfile for the Streamlit app.
 - `requirements.txt`: Python dependencies.
+
+## Deployment on AWS Lightsail
+- The application is hosted on an AWS Lightsail instance running Ubuntu.
+- The instance runs a Dockerized setup with `docker-compose` managing the services.
+- The Streamlit app is publicly accessible via the instance's public IP on port 8501.
+
+## Future Improvements
+- Implement authentication for user sessions.
+- Improve the model's accuracy by experimenting with different architectures.
+- Automate deployment using CI/CD pipelines.
