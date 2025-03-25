@@ -1,6 +1,6 @@
 # Digit Identification
 
-Demo version available on [here](http://13.40.6.33:8501/).
+Demo version available [here](http://13.40.6.33:8501/).
 
 ## Overview
 
